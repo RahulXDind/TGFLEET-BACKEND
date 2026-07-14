@@ -3,7 +3,7 @@
 // Required env vars: API_BASE, WORKER_TOKEN, TG_API_ID, TG_API_HASH
 // Optional: WORKER_LABEL (default "worker-1"), POLL_INTERVAL_MS (default 5000), HEARTBEAT_INTERVAL_MS (default 20000)
 
-import { TelegramClient } from "telegram";
+import { TelegramClient, Api } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 
 const API_BASE = process.env.API_BASE;
@@ -66,12 +66,11 @@ async function handleLogin(acct, ch) {
     }
     if (ch.stage === "code" && ch.submitted_code && ch.phone_code_hash) {
       try {
-        await c.invoke({
-          _: "auth.signIn",
-          phone_number: acct.phone,
-          phone_code_hash: ch.phone_code_hash,
-          phone_code: ch.submitted_code,
-        });
+        await c.invoke(new Api.auth.SignIn({
+          phoneNumber: acct.phone,
+          phoneCodeHash: ch.phone_code_hash,
+          phoneCode: ch.submitted_code,
+        }));
         const session = c.session.save();
         await api("/api/public/worker/report", {
           type: "login_complete",
