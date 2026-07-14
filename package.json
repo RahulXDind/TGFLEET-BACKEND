@@ -1,0 +1,17 @@
+{
+  "name": "tgfleet-worker",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "main": "worker.mjs",
+  "scripts": {
+    "start": "node worker.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "telegram": "^2.26.16",
+    "input": "^1.0.1"
+  }
+}
